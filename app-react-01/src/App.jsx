@@ -1,6 +1,9 @@
+import { useState } from "react";
+
 import "./App.css";
 
 import Card from "./components/Card";
+import SearchBar from "./components/SearchBar";
 
 const listCars = [
   {
@@ -33,16 +36,31 @@ const listCars = [
 ];
 
 const App = () => {
-return (
-	<>
-	  <h1>Anúncios Recentes</h1>
-	  <div className='cards'>
-		{listCars.map((car) => (
-		  <Card key={car.id} car={car} />
-		))}
-	  </div>
-	</>
-  );
-}
+   const [cars, setCars] = useState(listCars);
+
+   const handleSearch = (query) => {
+     if (query === '') {
+       setCars(listCars);
+       return;
+     }
+
+	    setCars(listCars.filter(car => car.model.includes(query)));
+   }
+
+   return (
+     <>
+       <h1>Anúncios Recentes</h1>
+       <SearchBar handleSearch={handleSearch} />
+       <div className='cards'>
+         {cars.map((car) => (
+           <Card key={car.id} car={car} />
+         ))}
+       </div>
+     </>
+   );
+};
+
+export default App;
+
 
   
